@@ -20,7 +20,7 @@ body {
 .card {
   max-width: 340px;
   margin: auto;
-  overflow-y: auto;
+  overflow-y: hidden;
   position: relative;
   z-index: 1;
   overflow-x: hidden;
