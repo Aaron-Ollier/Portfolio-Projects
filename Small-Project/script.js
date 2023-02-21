@@ -1,3 +1,5 @@
+/* First section 
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
 const buttons = document.querySelectorAll(".card-buttons button");
 const sections = document.querySelectorAll(".card-section");
 const card = document.querySelector(".card");
@@ -18,3 +20,52 @@ const handleButtonClick = e => {
 buttons.forEach(btn => {
   btn.addEventListener("click", handleButtonClick);
 });
+
+const buttons2 = document.querySelectorAll(".menu__item");
+let activeButton = document.querySelector(".menu__item.active");
+
+buttons.forEach(item => {
+
+    const text = item.querySelector(".menu__text");
+    setLineWidth(text, item);
+
+    window.addEventListener("resize", () => {
+        setLineWidth(text, item);
+    })
+
+    item.addEventListener("click", function() {
+        if (this.classList.contains("active")) return;
+
+        this.classList.add("active");
+        
+        if (activeButton) {
+            activeButton.classList.remove("active");
+            activeButton.querySelector(".menu__text").classList.remove("active");
+        }
+        
+        handleTransition(this, text);
+        activeButton = this;
+
+    });
+
+    
+});
+
+
+function setLineWidth(text, item) {
+    const lineWidth = text.offsetWidth + "px";
+    item.style.setProperty("--lineWidth", lineWidth);
+}
+
+function handleTransition(item, text) {
+
+    item.addEventListener("transitionend", (e) => {
+
+        if (e.propertyName != "flex-grow" || 
+        !item.classList.contains("active")) return;
+
+        text.classList.add("active");
+        
+    });
+
+}
