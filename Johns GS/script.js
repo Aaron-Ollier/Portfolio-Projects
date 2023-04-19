@@ -106,29 +106,33 @@ function handleFileUpload(event) {
     const reader = new FileReader();
   
     reader.onload = function (e) {
+      const expenseTableTitle = document.querySelector("#expenseTable th[colspan='4']");
       const data = new Uint8Array(e.target.result);
       const workbook = XLSX.read(data, { type: "array" });
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
       const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-  
-      // Clear existing table rows
-      while (table.rows.length > 0) {
-        table.deleteRow(0);
-      }
-  
-      // Add rows from uploaded file
-      for (let i = 1; i < rows.length; i++) {
-        const row = table.insertRow();
-        const amountCell = row.insertCell(0);
-        const dateCell = row.insertCell(1);
-  
 
-        amountCell.textContent = rows[i][0];
-        dateCell.textContent = rows[i][1];
-      }
-  
-      updateTotal(); // Update the total after adding rows from the uploaded file
+const customerName = rows[1][0];
+expenseTableTitle.textContent = customerName;
+
+// Clear existing table rows
+while (table.rows.length > 0) {
+  table.deleteRow(0);
+}
+
+// Add rows from uploaded file
+for (let i = 1; i < rows.length; i++) {
+  const row = table.insertRow();
+  const amountCell = row.insertCell(0);
+  const dateCell = row.insertCell(1);
+
+  amountCell.textContent = rows[i][1];
+  dateCell.textContent = rows[i][2];
+}
+
+updateTotal(); // Update the total after adding rows from the uploaded file
+
     };
   
     reader.readAsArrayBuffer(file);
@@ -161,17 +165,7 @@ function handleFileUpload(event) {
    // Reset button event listener
    const resetBtn = document.getElementById("resetBtn");
    resetBtn.addEventListener("click", function () {
-     // Clear form inputs
-     amountInput.value = "";
-     dateInput.value = "";
- 
-     // Clear table rows
-     while (table.rows.length > 0) {
-       table.deleteRow(0);
-     }
- 
-     // Update total
-     updateTotal();
+    window.location.reload()
    });
 
    // Get the buttons
